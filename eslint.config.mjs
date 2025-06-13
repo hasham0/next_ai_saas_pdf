@@ -26,22 +26,4 @@ const eslintConfig = [
   },
 ];
 
-// const eslintConfig = {
-//   ...compat.config({
-//     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
-//     plugins: ["prettier"],
-//     rules: {
-//       "no-console": "off",
-//       "no-unused-vars": ["off", { argsIgnorePattern: "^_" }],
-//       "prefer-const": "error",
-//       "prettier/prettier": "error",
-//       "react/no-escape-entities": "off",
-//       eqeqeq: ["error", "always"],
-//       "@typescript-eslint/explicit-function-return-type": "off",
-//       "@typescript-eslint/no-explicit-any": "warn",
-//       "@typescript-eslint/no-empty-object-type": "off",
-//     },
-//   }),
-// };
-
 export default eslintConfig;
