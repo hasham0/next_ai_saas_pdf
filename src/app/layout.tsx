@@ -5,6 +5,7 @@ import { Source_Sans_3 as FontSans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import Footer from "@/components/shared/footer";
 import Header from "@/components/shared/header";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({
   variable: "--font-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <div className="relative flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
+            <Toaster position="top-right" />
             <Footer />
           </div>
         </body>

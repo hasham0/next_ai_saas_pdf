@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 type Props = {
