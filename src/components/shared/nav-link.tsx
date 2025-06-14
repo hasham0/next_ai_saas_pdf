@@ -19,7 +19,7 @@ const NavLink = ({ href, children, className }: Props) => {
     <Link
       href={href}
       className={cn(
-        "text-sm text-gray-200 transition-colors duration-200 hover:text-rose-500",
+        "text-sm font-bold text-gray-400 transition-colors duration-200 hover:text-rose-500",
         className,
         isActive && "text-rose-500"
       )}
