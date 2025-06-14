@@ -27,7 +27,7 @@ const Header = ({}: Props) => {
         </div>
         <div className="flex items-center lg:flex-1 lg:justify-end">
           <SignedIn>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <NavLink href={"/upload"}>Upload a PDF</NavLink>
               <div>Pro</div>
               <SignedIn>
