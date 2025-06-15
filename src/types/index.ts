@@ -14,5 +14,14 @@ type PlanTS = {
   priceId: string;
   items: string[];
 };
+type UploadFileResponseTS<TServerOutput> = {
+  name: string;
+  size: number;
+  key: string;
+  url: string;
+  customId: string | null;
 
-export type { StepTS, PlanTS };
+  serverData: TServerOutput;
+};
+
+export type { StepTS, PlanTS, UploadFileResponseTS };
