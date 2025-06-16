@@ -43,31 +43,51 @@ const UploadForm = ({}: Props) => {
         });
         return;
       }
-      toast.loading("Uploding PDF...", {
+      toast("Uploding PDF...", {
         description: "We are uploading your PDF for processing",
       });
+
       const response = await startUpload([file]);
       if (!response) {
         setIsLoading(false);
         toast.error("Something went wrong while uploading", {
           description: "please use a different file",
         });
+        return;
       }
-      toast.loading("Processing PDF...", {
+      toast("Processing PDF...", {
         description: "Hang tight!, Our AI is processing your PDF",
       });
 
-      const result = await generatePdfSummary(response);
-      const { data = null, message = null } = result;
-      if (data) {
-        if (data.summary) {
-          toast.success(data.message, {
-            description: "Hang tight!, We are saving your summary",
-          });
-        }
+      const result: {
+        success: boolean;
+        message: string;
+        data: { summery: object } | null;
+      } = await generatePdfSummary(response);
+
+      if (!result.success) {
+        toast.error("Failed to generate summary", {
+          description: "Something went wrong while processing the PDF.",
+        });
+        setIsLoading(false);
         formRef.current?.reset();
       }
+
+      if (result && result.data) {
+        const summary = result.data.summery;
+        if (summary) {
+          toast.success(result.message, {
+            description: "Hang tight!, We are saving your summary",
+          });
+          setIsLoading(false);
+          formRef.current?.reset();
+        }
+      }
     } catch (error) {
+      console.log("🚀 ~ handleOnSubmit ~ error:", error);
+      toast.error("Failed to generate summary", {
+        description: "Something went wrong while processing the PDF.",
+      });
       setIsLoading(false);
       formRef.current?.reset();
     }

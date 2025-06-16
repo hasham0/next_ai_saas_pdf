@@ -1,20 +1,30 @@
 "use server";
 
+import { ClientUploadedFileData } from "uploadthing/types";
+import { generatePdfSummaryFromGeminia } from "../geminiai";
 import { generatePdfSummaryFromOpenAI } from "../openai";
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 
+type UploadResponse =
+  | ClientUploadedFileData<any>[]
+  | [
+      {
+        name: string;
+        serverData: {
+          userId: string;
+          file: string;
+        };
+        url: string;
+      },
+    ];
+
 const generatePdfSummary = async (
-  uploadResponse: [
-    {
-      name: string;
-      serverData: {
-        userId: string;
-        file: string;
-      };
-      url: string;
-    },
-  ]
-) => {
+  uploadResponse: UploadResponse
+): Promise<{
+  success: boolean;
+  message: string;
+  data: { summery: object } | null;
+}> => {
   if (!uploadResponse) {
     return {
       success: false,
@@ -36,14 +46,24 @@ const generatePdfSummary = async (
     try {
       summeryResult = await generatePdfSummaryFromOpenAI(pdfText);
     } catch (error) {
-      console.error(error);
+      try {
+        summeryResult = await generatePdfSummaryFromGeminia(pdfText);
+      } catch (error) {
+        if (error instanceof Error && error.message === "RATE_LIMIT_EXCEEDED") {
+          console.error(
+            "Gemini API failed after OpenAI quota exceeded.",
+            error
+          );
+          throw new Error(
+            "Failed to generate PDF summary with available AI providers."
+          );
+        }
+      }
     }
     if (!summeryResult) {
-      return {
-        success: false,
-        message: "failed to generate summery",
-        data: null,
-      };
+      throw new Error(
+        "Failed to generate PDF summary with available AI providers."
+      );
     }
     return {
       success: true,
