@@ -20,8 +20,15 @@ type UploadFileResponseTS<TServerOutput> = {
   key: string;
   url: string;
   customId: string | null;
-
   serverData: TServerOutput;
 };
 
-export type { StepTS, PlanTS, UploadFileResponseTS };
+type PDFSummaryTS = {
+  userId?: string;
+  original_file_url: string;
+  summary_text: object;
+  title: string;
+  file_name: string;
+};
+
+export type { StepTS, PlanTS, UploadFileResponseTS, PDFSummaryTS };

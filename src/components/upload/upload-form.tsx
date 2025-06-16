@@ -1,15 +1,20 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import UploadFormInput from "@/components/upload/upload-form-input";
-import { generatePdfSummary } from "@/lib/actions/upload-actions";
+import {
+  generatePdfSummary,
+  storePdfSummaryAction,
+} from "@/lib/actions/upload-actions";
 import { fileSchema } from "@/lib/zod";
 import { useUploadThing } from "@/utils/uploadthing";
 
 type Props = {};
 
 const UploadForm = ({}: Props) => {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { startUpload } = useUploadThing("pdfUploader", {
@@ -59,28 +64,39 @@ const UploadForm = ({}: Props) => {
         description: "Hang tight!, Our AI is processing your PDF",
       });
 
-      const result: {
+      const summaryResult: {
         success: boolean;
         message: string;
-        data: { summery: object } | null;
+        data: { summery: object; title: string } | null;
       } = await generatePdfSummary(response);
 
-      if (!result.success) {
+      if (!summaryResult.success) {
         toast.error("Failed to generate summary", {
           description: "Something went wrong while processing the PDF.",
         });
         setIsLoading(false);
         formRef.current?.reset();
+        return;
       }
 
-      if (result && result.data) {
-        const summary = result.data.summery;
+      toast.success("Saving PDF", {
+        description: "Hang tight!, We are saving your summary",
+      });
+      let storeResult;
+      if (summaryResult && summaryResult.data) {
+        const summary = summaryResult.data.summery;
         if (summary) {
-          toast.success(result.message, {
-            description: "Hang tight!, We are saving your summary",
+          storeResult = await storePdfSummaryAction({
+            summary_text: summary,
+            original_file_url: response[0].ufsUrl,
+            title: summaryResult.data.title,
+            file_name: file.name,
           });
-          setIsLoading(false);
+          toast.success(storeResult?.message, {
+            description: "Your Summary has been saved",
+          });
           formRef.current?.reset();
+          router.push(`/summaries/${storeResult?.data?.[0]?.id}`);
         }
       }
     } catch (error) {
