@@ -22,7 +22,7 @@ const Header = ({}: Props) => {
         <div className="flex gap-4 lg:items-center lg:justify-center lg:gap-12">
           <NavLink href={"/#pricing"}>Pricing</NavLink>
           <SignedIn>
-            <NavLink href={"/dashboard"}>Dashboard</NavLink>
+            <NavLink href={"/dashboard"}>Your Summaries</NavLink>
           </SignedIn>
         </div>
         <div className="flex items-center lg:flex-1 lg:justify-end">

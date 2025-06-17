@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import UploadFormInput from "@/components/upload/upload-form-input";
 import {
-  generatePdfSummary,
+  generatePdfSummaryAction,
   storePdfSummaryAction,
 } from "@/lib/actions/upload-actions";
 import { fileSchema } from "@/lib/zod";
@@ -68,7 +68,7 @@ const UploadForm = ({}: Props) => {
         success: boolean;
         message: string;
         data: { summery: object; title: string } | null;
-      } = await generatePdfSummary(response);
+      } = await generatePdfSummaryAction(response);
 
       if (!summaryResult.success) {
         toast.error("Failed to generate summary", {
@@ -95,8 +95,8 @@ const UploadForm = ({}: Props) => {
           toast.success(storeResult?.message, {
             description: "Your Summary has been saved",
           });
-          formRef.current?.reset();
           router.push(`/summaries/${storeResult?.data?.[0]?.id}`);
+          formRef.current?.reset();
         }
       }
     } catch (error) {
@@ -114,7 +114,7 @@ const UploadForm = ({}: Props) => {
         isLoading={isLoading}
         ref={formRef}
         onSubmit={handleOnSubmit}
-      />{" "}
+      />
     </div>
   );
 };

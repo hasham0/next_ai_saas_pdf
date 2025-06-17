@@ -8,7 +8,7 @@ import { generatePdfSummaryFromGeminia } from "@/lib/geminiai";
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { generatePdfSummaryFromOpenAI } from "@/lib/openai";
 import { PDFSummaryTS } from "@/types";
-import formattedFileNameAsTitle from "@/utils/format-filename";
+import { formattedFileNameAsTitle } from "@/utils/formats";
 
 type UploadResponse =
   | ClientUploadedFileData<any>[]
@@ -23,7 +23,7 @@ type UploadResponse =
       },
     ];
 
-const generatePdfSummary = async (
+const generatePdfSummaryAction = async (
   uploadResponse: UploadResponse
 ): Promise<{
   success: boolean;
@@ -51,6 +51,7 @@ const generatePdfSummary = async (
     try {
       summeryResult = await generatePdfSummaryFromOpenAI(pdfText);
     } catch (error) {
+      console.error(error);
       try {
         summeryResult = await generatePdfSummaryFromGeminia(pdfText);
       } catch (error) {
@@ -159,4 +160,4 @@ const storePdfSummaryAction = async ({
     data: savedPdfSummary,
   };
 };
-export { generatePdfSummary, storePdfSummaryAction };
+export { generatePdfSummaryAction, storePdfSummaryAction };
