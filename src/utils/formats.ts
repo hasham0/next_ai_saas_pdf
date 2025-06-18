@@ -24,12 +24,15 @@ const formatFileName = (url: string): string => {
     .join(" ")
     .trim();
 };
+
 const formatSummaryText = (summary: string): string => {
   return summary
-    .replace(/^```markdown\n|```$/g, "")
+    .replace(/^```markdown\s*|```$/g, "")
     .replace(/^#+\s?/gm, "")
-    .replace(/^•\s?/gm, "")
+    .replace(/^[-*•●★💡✨🌟💫🔥❗🚀📝📄💼]\s?/gm, "")
     .replace(/[*_~`]/g, "")
+    .replace(/^\s+/gm, "")
+    .replace(/\n{2,}/g, "\n\n")
     .trim();
 };
 

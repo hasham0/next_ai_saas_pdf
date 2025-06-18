@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import getDBConnection from "../db";
 import { currentUser } from "@clerk/nextjs/server";
+import getDBConnection from "@/lib/db";
 
 const deleteSummaryAction = async ({ summaryId }: { summaryId: string }) => {
   try {

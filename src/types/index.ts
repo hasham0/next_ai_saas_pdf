@@ -31,4 +31,15 @@ type PDFSummaryTS = {
   file_name: string;
 };
 
-export type { StepTS, PlanTS, UploadFileResponseTS, PDFSummaryTS };
+type parseSummaryTS = {
+  title: string;
+  content: string[];
+};
+
+export type {
+  StepTS,
+  PlanTS,
+  UploadFileResponseTS,
+  PDFSummaryTS,
+  parseSummaryTS,
+};

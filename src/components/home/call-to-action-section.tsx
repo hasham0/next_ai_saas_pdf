@@ -19,7 +19,7 @@ const CTASection = ({}: Props) => {
             </p>
           </div>
           <div className="flex flex-col justify-center gap-2 min-[400px]:flex-row">
-            <div className="">
+            <div>
               <Button
                 size={"lg"}
                 variant={"link"}
