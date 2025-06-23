@@ -1,5 +1,5 @@
 import PricngCard from "@/components/home/pricing-card";
-import { plans } from "@/lib/constant";
+import { pricingPlans } from "@/lib/constant";
 
 type Props = {};
 
@@ -13,7 +13,7 @@ const PricingSection = ({}: Props) => {
           </h2>
         </div>
         <div className="relative flex flex-col items-center justify-center gap-8 lg:flex-row lg:items-stretch">
-          {plans.map((plan, index) => (
+          {pricingPlans.map((plan, index) => (
             <PricngCard key={index} plan={plan} />
           ))}
         </div>

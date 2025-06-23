@@ -26,8 +26,22 @@ const getSummaryById = async (summaryId: string) => {
         FROM pdf_summaries
         WHERE id = ${summaryId};`;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };
-export { getSummaries, getSummaryById };
+
+const getUserUploadCount = async (userId: string) => {
+  try {
+    const sql = await getDBConnection();
+    const result = await sql`
+      SELECT COUNT(*) AS upload_count 
+      FROM pdf_summaries 
+      WHERE user_id = ${userId};`;
+    return result[0].upload_count || 0;
+  } catch (error) {
+    console.log("🚀 ~ getUserUploadCount ~ error:", error);
+    throw error;
+  }
+};
+export { getSummaries, getSummaryById, getUserUploadCount };

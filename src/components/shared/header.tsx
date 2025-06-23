@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import NavLink from "@/components/shared/nav-link";
+import PlanBadge from "@/components/shared/plan-badge";
 
 type Props = {};
 
@@ -29,7 +30,7 @@ const Header = ({}: Props) => {
           <SignedIn>
             <div className="flex items-center gap-4">
               <NavLink href={"/upload"}>Upload a PDF</NavLink>
-              <div>Pro</div>
+              <PlanBadge />
               <SignedIn>
                 <UserButton />
               </SignedIn>

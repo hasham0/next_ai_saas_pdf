@@ -110,7 +110,7 @@ const savedPDFSummary = async ({
     RETURNING *;
   `;
   } catch (error) {
-    console.log("🚀 ~ savedPDFSummary ~ error:", error);
+    console.error("🚀 ~ savedPDFSummary ~ error:", error);
     throw error;
   }
 };

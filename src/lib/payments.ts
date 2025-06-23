@@ -25,7 +25,7 @@ const createOrUpdateUser = async ({
       await sql`UPDATE users SET full_name = ${fullname}, customer_id = ${customer_id}, price_id = ${price_id}, status = ${status} WHERE email = ${email};`;
     }
   } catch (error) {
-    console.log("🚀 ~ error:", error);
+    console.error("🚀 ~ error:", error);
     throw error;
   }
 };
@@ -45,7 +45,7 @@ const createPayment = async ({
     const { amount_total, status, id } = session;
     await sql`INSERT INTO payments (amount, status, stripe_payment_id,price_id,user_email) VALUES (${amount_total}, ${status}, ${id}, ${priceId}, ${userEmail});`;
   } catch (error) {
-    console.log("🚀 ~ error:", error);
+    console.error("🚀 ~ error:", error);
     throw error;
   }
 };
@@ -80,7 +80,7 @@ const handleCheckoutSessionCompleted = async ({
       });
     }
   } catch (error) {
-    console.log("🚀 ~ error:", error);
+    console.error("🚀 ~ error:", error);
     throw error;
   }
 };

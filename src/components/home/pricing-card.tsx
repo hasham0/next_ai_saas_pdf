@@ -48,6 +48,7 @@ const PricngCard = ({
                 : "border-rose-100 from-rose-400 to-rose-500"
             )}
             href={paymentLink}
+            target="_blank"
           >
             <span>Buy Now</span>
             <ArrowRight size={18} />
