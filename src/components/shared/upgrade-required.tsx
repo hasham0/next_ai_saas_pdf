@@ -1,8 +1,7 @@
-import React from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkle } from "lucide-react";
-import { Button } from "../ui/button";
-import BgGradient from "./bg-gradient";
+import BgGradient from "@/components/shared/bg-gradient";
+import { Button } from "@/components/ui/button";
 
 type Props = {};
 

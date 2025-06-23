@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { MotionDiv } from "@/components/shared/motion-wrapper";
 import DeleteButton from "@/components/summeries/delete-button";
 import SummaryHeader from "@/components/summeries/summary-header";
 import SummaryStatusBadge from "@/components/summeries/summary-status-badge";
 import { Card } from "@/components/ui/card";
+import { itemVariants } from "@/lib/constant";
 import { formatSummaryText } from "@/utils/formats";
 
 type Props = {
@@ -11,7 +13,15 @@ type Props = {
 
 const SummaryCard = ({ summary }: Props) => {
   return (
-    <div>
+    <MotionDiv
+      variants={itemVariants}
+      initial="hidden"
+      animate={"visible"}
+      whileHover={{
+        scale: 1.02,
+        transition: { duration: 0.2, ease: "easeOut" },
+      }}
+    >
       <Card className="relative h-full">
         <div className="absolute top-2 right-2">
           <DeleteButton summaryId={summary.id} />
@@ -32,7 +42,7 @@ const SummaryCard = ({ summary }: Props) => {
           </div>
         </Link>
       </Card>
-    </div>
+    </MotionDiv>
   );
 };
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { redirect } from "next/navigation";
 import { Crown } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";

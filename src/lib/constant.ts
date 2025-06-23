@@ -1,4 +1,5 @@
 import { BrainCircuit, FileOutput, FileText } from "lucide-react";
+import { Variants } from "motion/react";
 import { isDev } from "@/lib/helpers";
 import { PlanTS, StepTS } from "@/types";
 
@@ -57,4 +58,42 @@ const pricingPlans: PlanTS[] = [
   },
 ];
 
-export { steps, pricingPlans };
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 100,
+      duration: 0.8,
+    },
+  },
+};
+
+const buttonVariants = {
+  scale: 1.05,
+  hover: {
+    transition: {
+      type: "spring",
+      damping: 10,
+      stiffness: 300,
+    },
+  },
+};
+
+export { steps, pricingPlans, containerVariants, itemVariants, buttonVariants };

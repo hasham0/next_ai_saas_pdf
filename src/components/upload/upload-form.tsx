@@ -115,6 +115,13 @@ const UploadForm = ({}: Props) => {
         ref={formRef}
         onSubmit={handleOnSubmit}
       />
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <p className="text-sm text-gray-500">
+            Please wait while we process your PDF...
+          </p>
+        </div>
+      )}
     </div>
   );
 };

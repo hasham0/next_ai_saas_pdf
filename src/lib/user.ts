@@ -1,6 +1,6 @@
-import { pricingPlans } from "./constant";
-import { getUserUploadCount } from "./summaries";
+import { pricingPlans } from "@/lib/constant";
 import getDBConnection from "@/lib/db";
+import { getUserUploadCount } from "@/lib/summaries";
 
 const getPriceIdForActiveUser = async (email: string) => {
   const sql = await getDBConnection();

@@ -3,9 +3,15 @@ import { redirect } from "next/navigation";
 import { ArrowRight, Plus } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
 import BgGradient from "@/components/shared/bg-gradient";
+import {
+  MotionDiv,
+  MotionH1,
+  MotionP,
+} from "@/components/shared/motion-wrapper";
 import EmptySummaryState from "@/components/summeries/empty-summary-state";
 import SummaryCard from "@/components/summeries/summary-card";
 import { Button } from "@/components/ui/button";
+import { itemVariants } from "@/lib/constant";
 import { getSummaries } from "@/lib/summaries";
 import { hasReachedUploadLimit } from "@/lib/user";
 
@@ -16,19 +22,44 @@ export default async function DashboardPage({}: Props) {
   if (!user?.id) return redirect("/sign-in");
   const summeries = await getSummaries(user.id);
   const { hasReachedLimit } = await hasReachedUploadLimit(user.id);
+
   return (
     <main className="min-h-screen">
       <BgGradient className="from-emerald-200 via-teal-200 to-cyan-200" />
-      <div className="px-28 py-12">
+      <MotionDiv
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="px-28 py-12"
+      >
         <div className="mb-8 flex flex-col items-center justify-around gap-4 md:flex-row">
           <div className="flex flex-col items-center gap-2">
-            <h1 className="text-4xl font-bold">Your Summeries</h1>
-            <p className="py-2 font-medium text-gray-500">
+            <MotionH1
+              variants={itemVariants}
+              initial="hidden"
+              animate={"visible"}
+              className="text-4xl font-bold"
+            >
+              Your Summeries
+            </MotionH1>
+            <MotionP
+              variants={itemVariants}
+              initial="hidden"
+              animate={"visible"}
+              className="py-1 font-medium text-gray-500"
+            >
               Transform PDFs into Concise Summaries
-            </p>
+            </MotionP>
           </div>
           {!hasReachedLimit && (
-            <div className="flex items-center">
+            <MotionDiv
+              variants={itemVariants}
+              initial="hidden"
+              animate={"visible"}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="flex items-center"
+            >
               <Button
                 variant={"link"}
                 className="group bg-linear-to-r from-slate-900 to-rose-500 text-white no-underline transition-all duration-300 hover:scale-105 hover:from-rose-500 hover:to-slate-900 hover:text-white"
@@ -38,12 +69,18 @@ export default async function DashboardPage({}: Props) {
                   New Summary
                 </Link>
               </Button>
-            </div>
+            </MotionDiv>
           )}
         </div>
 
         {hasReachedLimit && (
-          <div className="mb-6">
+          <MotionDiv
+            variants={itemVariants}
+            initial="hidden"
+            animate={"visible"}
+            whileHover={{ scale: 1.05 }}
+            className="my-10"
+          >
             <div className="mx-auto flex max-w-5xl items-center justify-center rounded-lg border border-rose-400 bg-rose-50 p-4">
               <p className="text-sm">
                 You have reached the limit of 5 uploads of basic plan
@@ -59,7 +96,7 @@ export default async function DashboardPage({}: Props) {
                 for unlimited uploads
               </p>
             </div>
-          </div>
+          </MotionDiv>
         )}
         {summeries.length === 0 ? (
           <EmptySummaryState />
@@ -70,7 +107,7 @@ export default async function DashboardPage({}: Props) {
             ))}
           </div>
         )}
-      </div>
+      </MotionDiv>
     </main>
   );
 }

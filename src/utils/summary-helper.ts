@@ -15,7 +15,7 @@ const parseSection = (summary: string) => {
 
       for (const line of lines) {
         const trimmed = line.trim();
-        const isBullet = /^[•●\-*]/.test(trimmed);
+        const isBullet = /^[•●\-\*\s]+/.test(trimmed);
 
         if (isBullet) {
           if (currentPoint) {
@@ -45,10 +45,10 @@ const parseSection = (summary: string) => {
 };
 
 const parseContent = (content: string) => {
-  const isNumbered = /^\d+\./.test(content);
-  const isBullet = /^[•●\-*]/.test(content);
+  const isNumbered = /^\d+\,/gi.test(content);
+  const isBullet = /^[•●\-\*\s]+/gi.test(content);
   const emojiRex =
-    /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g;
+    /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>●?@[\]^`{|}~]/g;
   const hasEmoji = emojiRex.test(content);
   const isEmpty = !content.trim();
   return {
@@ -58,5 +58,27 @@ const parseContent = (content: string) => {
     isEmpty,
   };
 };
+const parseEmojiPoint = (content: string) => {
+  // Remove leading bullet or emoji
+  const cleanContent = content.replace(/^[•●\-\*\s]+/, "").trim();
 
-export { parseSection, parseContent };
+  // Check for emoji at the start
+  const emojiMatch = cleanContent.match(
+    /^([\p{Emoji_Presentation}\p{Extended_Pictographic}])\s+(.*)$/u
+  );
+
+  if (emojiMatch) {
+    const [, emoji, text] = emojiMatch;
+    return {
+      emoji: emoji.trim(),
+      text: text.trim(),
+    };
+  }
+
+  // If no emoji, treat as regular bullet point
+  return {
+    text: cleanContent,
+  };
+};
+
+export { parseSection, parseContent, parseEmojiPoint };
