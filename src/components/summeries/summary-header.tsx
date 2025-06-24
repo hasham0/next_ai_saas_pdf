@@ -5,7 +5,7 @@ import { formatFileName } from "@/utils/formats";
 type Props = {
   original_file_name: string;
   title: string;
-  createdAt: Date;
+  createdAt: Date | string;
 };
 
 const SummaryHeader = ({ original_file_name, title, createdAt }: Props) => {

@@ -30,6 +30,7 @@ const UploadForm = ({}: Props) => {
         description: err.message,
       });
     },
+
     onUploadBegin: (file) => {
       console.log("upload has begun for", file);
     },

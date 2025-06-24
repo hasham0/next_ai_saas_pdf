@@ -8,7 +8,7 @@ import { itemVariants } from "@/lib/constant";
 import { formatSummaryText } from "@/utils/formats";
 
 type Props = {
-  summary: any;
+  summary: { [key: string]: string }; // Adjust type as per your summary structure
 };
 
 const SummaryCard = ({ summary }: Props) => {

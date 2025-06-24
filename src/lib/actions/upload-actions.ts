@@ -10,7 +10,7 @@ import { generatePdfSummaryFromOpenAI } from "@/lib/openai";
 import { PDFSummaryTS } from "@/types";
 
 type UploadResponse =
-  | ClientUploadedFileData<any>[]
+  | ClientUploadedFileData<{ [key: string]: string }>[]
   | [
       {
         name: string;
