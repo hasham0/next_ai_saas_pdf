@@ -8,7 +8,7 @@ import { containerVariants } from "@/lib/constant";
 import { hasReachedUploadLimit } from "@/lib/user";
 
 type Props = {};
-
+export const maxDuration = 20;
 export default async function UploadPage({}: Props) {
   const user = await currentUser();
   if (!user || !user.id) {

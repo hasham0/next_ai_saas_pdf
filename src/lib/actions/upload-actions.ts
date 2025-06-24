@@ -8,7 +8,6 @@ import { generatePdfSummaryFromGeminia } from "@/lib/geminiai";
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { generatePdfSummaryFromOpenAI } from "@/lib/openai";
 import { PDFSummaryTS } from "@/types";
-import { formattedFileNameAsTitle } from "@/utils/formats";
 
 type UploadResponse =
   | ClientUploadedFileData<any>[]
@@ -22,6 +21,38 @@ type UploadResponse =
         ufsUrl: string;
       },
     ];
+
+const generatePdfTextAction = async ({ fileUrl }: { fileUrl: string }) => {
+  if (!fileUrl) {
+    return {
+      success: false,
+      message: "file upload failed",
+      data: null,
+    };
+  }
+
+  try {
+    const pdfText = await fetchAndExtractPdfText(fileUrl);
+    if (!pdfText) {
+      throw new Error(
+        "Failed to generate PDF summary with available AI providers."
+      );
+    }
+    return {
+      success: true,
+      message: "Saving PDF...",
+      data: { pdfText },
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message || "file upload failed",
+        data: null,
+      };
+    }
+  }
+};
 
 const generatePdfSummaryAction = async (
   uploadResponse: UploadResponse
@@ -46,14 +77,17 @@ const generatePdfSummaryAction = async (
   if (!pdfUrl)
     return { success: false, message: "file upload failed", data: null };
   try {
-    const pdfText = await fetchAndExtractPdfText(pdfUrl);
     let summeryResult;
     try {
-      summeryResult = await generatePdfSummaryFromOpenAI(pdfText);
+      summeryResult = await generatePdfSummaryFromOpenAI(
+        uploadResponse[0].ufsUrl
+      );
     } catch (error) {
       console.error(error);
       try {
-        summeryResult = await generatePdfSummaryFromGeminia(pdfText);
+        summeryResult = await generatePdfSummaryFromGeminia(
+          uploadResponse[0].ufsUrl
+        );
       } catch (error) {
         if (error instanceof Error && error.message === "RATE_LIMIT_EXCEEDED") {
           console.error(
@@ -71,11 +105,13 @@ const generatePdfSummaryAction = async (
         "Failed to generate PDF summary with available AI providers."
       );
     }
-    const formattedFileName = formattedFileNameAsTitle(fileName);
     return {
       success: true,
-      message: "Saving PDF...",
-      data: { summery: summeryResult, title: formattedFileName },
+      message: "PDF summary generated successfully",
+      data: {
+        summery: summeryResult,
+        title: fileName,
+      },
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -160,4 +196,8 @@ const storePdfSummaryAction = async ({
     data: savedPdfSummary,
   };
 };
-export { generatePdfSummaryAction, storePdfSummaryAction };
+export {
+  generatePdfSummaryAction,
+  storePdfSummaryAction,
+  generatePdfTextAction,
+};
