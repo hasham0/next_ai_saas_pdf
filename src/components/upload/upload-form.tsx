@@ -3,6 +3,7 @@
 import { FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import LoadingSkeleton from "@/components/upload/loading-skeleton";
 import UploadFormInput from "@/components/upload/upload-form-input";
 import {
   generatePdfSummaryAction,
@@ -116,11 +117,22 @@ const UploadForm = ({}: Props) => {
         onSubmit={handleOnSubmit}
       />
       {isLoading && (
-        <div className="flex items-center justify-center">
-          <p className="text-sm text-gray-500">
-            Please wait while we process your PDF...
-          </p>
-        </div>
+        <>
+          <div className="relative mb-6">
+            <div
+              className="absolute inset-0 flex items-center"
+              aria-hidden="true"
+            >
+              <div className="w-full border-t border-gray-200 dark:border-gray-800" />
+            </div>
+            <div className="relative flex justify-center py-2">
+              <span className="bg-white px-4 text-sm font-medium text-gray-900 dark:bg-gray-900 dark:text-white">
+                Please wait while we process your PDF...
+              </span>
+            </div>
+            <LoadingSkeleton />
+          </div>
+        </>
       )}
     </div>
   );
